@@ -47,8 +47,6 @@ services:
     image: acspri/quexc
     ports:
       - 8080:80
-    volumes:
-      - /location-of-forms:/forms
     environment:
       QUEXC_DB_PASSWORD: example
       QUEXC_ADMIN_PASSWORD: password
