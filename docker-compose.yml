@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+
+  quexc:
+    image: acspri/quexc
+    ports:
+      - 8087:80
+    environment:
+      QUEXC_DB_PASSWORD: example
+      QUEXC_ADMIN_PASSWORD: password
+
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: example
