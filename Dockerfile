@@ -1,8 +1,10 @@
-FROM php:7-apache
+FROM php:7.3-apache
+
+ENV DOWNLOAD_URL https://master.dl.sourceforge.net/project/quexc/quexc/quexc-0.9.5/quexc-0.9.5.zip
 
 # install the PHP extensions we need
-RUN apt-get update && apt-get install -y bzr mysql-client apache2-utils aspell libpspell-dev && rm -rf /var/lib/apt/lists/* \
-	&& docker-php-ext-install mysqli opcache pspell
+RUN apt-get update && apt-get install -y unzip mariadb-client apache2-utils aspell libpspell-dev && rm -rf /var/lib/apt/lists/* \
+	&& docker-php-ext-install mysqli opcache pspell pdo_mysql
 
 # set recommended PHP.ini settings
 # see https://secure.php.net/manual/en/opcache.installation.php
@@ -21,17 +23,21 @@ RUN mkdir /opt/quexc && chown www-data:www-data /opt/quexc
 
 VOLUME ["/var/www/html", "/opt/quexc"]
 
-RUN set -x \
-	&& bzr branch lp:quexc /usr/src/quexc \
-	&& chown -R www-data:www-data /usr/src/quexc
+RUN set -x; \
+	curl -SL "$DOWNLOAD_URL" -o /tmp/quexc.zip; \
+    unzip /tmp/quexc.zip -d /tmp; \
+    mv /tmp/quexc*/* /var/www/html/; \
+    rm /tmp/quexc.zip; \
+    rmdir /tmp/quexc*; \
+    chown -R www-data:www-data /var/www/html
 
 #use ADODB
 RUN set -x \
-	&& curl -o adodb.tar.gz -fSL "https://github.com/ADOdb/ADOdb/archive/v5.20.7.tar.gz" \
+	&& curl -o adodb.tar.gz -fSL "https://github.com/ADOdb/ADOdb/archive/master.tar.gz" \
 	&& tar -xzf adodb.tar.gz -C /usr/src/ \
 	&& rm adodb.tar.gz \
 	&& mkdir /usr/share/php \
-	&& mv /usr/src/ADOdb-5.20.7 /usr/share/php/adodb
+	&& mv /usr/src/ADOdb-master /usr/share/php/adodb
 
 #Set PHP defaults for queXS (allow bigger uploads for sample files)
 RUN { \
