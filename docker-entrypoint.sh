@@ -83,6 +83,7 @@ EOF
 	fi
 
 	chown www-data:www-data -R /opt/quexc
+	chown www-data:www-data /var/www/html/dictionary
 
 	# see http://stackoverflow.com/a/2705678/433558
 	sed_escape_lhs() {
