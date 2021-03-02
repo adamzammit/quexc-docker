@@ -21,7 +21,7 @@ RUN a2enmod rewrite expires authz_groupfile
 
 RUN mkdir /opt/quexc && chown www-data:www-data /opt/quexc
 
-VOLUME ["/var/www/html", "/opt/quexc"]
+VOLUME ["/opt/quexc"]
 
 RUN set -x; \
 	curl -SL "$DOWNLOAD_URL" -o /tmp/quexc.zip; \

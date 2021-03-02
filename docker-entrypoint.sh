@@ -42,13 +42,12 @@ if [[ "$1" == apache2* ]] || [ "$1" == php-fpm ]; then
 		exit 1
 	fi
 
-	if ! [ -e index.php ]; then
-		echo >&2 "queXC not found in $(pwd) - copying now..."
+	if ! [ -e admin/.htaccess ]; then
+		echo >&2 "queXC password control not found in $(pwd) - copying now..."
 		if [ "$(ls -A)" ]; then
 			echo >&2 "WARNING: $(pwd) is not empty - press Ctrl+C now if this is an error!"
 			( set -x; ls -A; sleep 10 )
 		fi
-		bzr export . /usr/src/quexc
 
         cat <<EOF > admin/.htaccess
 AuthName "queXC"
@@ -64,7 +63,7 @@ AuthUserFile /opt/quexc/password
 AuthGroupFile /opt/quexc/group
 require group verifier
 EOF
-		echo >&2 "Complete! queXC has been successfully copied to $(pwd)"
+		echo >&2 "Complete! queXC has been successfully set up with password control at $(pwd)"
 	else
         echo >&2 "queXC found in $(pwd) - not copying."
 	fi
