@@ -1,6 +1,6 @@
 FROM php:7.3-apache
 
-ENV DOWNLOAD_URL https://master.dl.sourceforge.net/project/quexc/quexc/quexc-0.9.7/quexc-0.9.7.zip
+ENV DOWNLOAD_URL https://master.dl.sourceforge.net/project/quexc/quexc/quexc-0.9.8/quexc-0.9.8.zip
 
 # install the PHP extensions we need
 RUN apt-get update && apt-get install -y unzip mariadb-client apache2-utils aspell libpspell-dev && rm -rf /var/lib/apt/lists/* \
